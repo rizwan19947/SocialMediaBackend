@@ -136,6 +136,26 @@ const logoutUser = asyncHandler(async (req, res) => {
      * Clear cookies
      * Clear refresh token from the database
      */
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set: {
+                refreshToken: undefined,
+            },
+        },
+        { new: true },
+    );
+
+    const cookieOptions = {
+        httpOnly: true,
+        secure: true,
+    };
+
+    return res
+        .status(200)
+        .clearCookie('accessToken', cookieOptions)
+        .clearCookie('refreshToken', cookieOptions)
+        .json(new ApiResponse(200, {}, 'User logged out!'));
 });
 
 const generateAccessAndRefreshTokens = async userId => {
@@ -156,5 +176,6 @@ const generateAccessAndRefreshTokens = async userId => {
 
 export {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 };
