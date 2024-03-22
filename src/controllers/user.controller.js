@@ -166,6 +166,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
      * - If user exists for that refresh token then generate access
      *   and refresh tokens
      */
+
+    /**
+     * Structure for accessing cookies may differ when the backend is deployed for multiple platforms
+     * for example: web app and mobile app
+     */
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
 
     if (!incomingRefreshToken) {
