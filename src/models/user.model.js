@@ -51,6 +51,11 @@ const userSchema = new Schema(
     },
 );
 
+/**
+ * When saving passwords in the database,
+ * we do not add them as cleartext, they
+ * need to be hashed for security concerns
+ */
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
 
